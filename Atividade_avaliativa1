@@ -1,0 +1,217 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+
+// Estrutura para armazenar os dados de uma consulta
+typedef struct {
+    char dataConsulta[20];
+    float peso;
+    float altura;
+    char prescricao[255];
+    float valorPago;
+} Consulta;
+
+// Estrutura para armazenar os dados de um paciente
+typedef struct {
+    int codigo;
+    char nome[255];
+    char dataNascimento[11];
+    char nomeMae[255];
+    char nomePai[255];
+    Consulta ultimaConsulta;
+} Paciente;
+
+Paciente pacientes[100];
+int totalPacientes = 0;
+// Função para calcular a idade
+void calcularIdade(const char *dataNascimento, int *anos, int *meses, int *dias) {
+    int dia, mes, ano;
+    sscanf(dataNascimento, "%d/%d/%d", &dia, &mes, &ano);
+
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+
+    *anos = tm.tm_year + 1900 - ano;
+    *meses = tm.tm_mon + 1 - mes;
+    *dias = tm.tm_mday - dia;
+
+    if (*dias < 0) {
+        *dias += 30;
+        *meses -= 1;
+    }
+
+    if (*meses < 0) {
+        *meses += 12;
+        *anos -= 1;
+    }
+}
+
+// Função para cadastrar um novo paciente
+void cadastrarPaciente() {
+    Paciente p;
+    printf("Código do Paciente: ");
+    scanf("%d", &p.codigo);
+    getchar(); 
+
+    printf("Nome do Paciente: ");
+    fgets(p.nome, 100, stdin);
+    p.nome[strcspn(p.nome, "\n")] = 0; 
+
+    printf("Data de Nascimento (dd/mm/aaaa): ");
+    scanf("%s", p.dataNascimento);
+
+    getchar(); // Limpar o buffer do teclado
+    printf("Nome da Mãe: ");
+    fgets(p.nomeMae, 100, stdin);
+    p.nomeMae[strcspn(p.nomeMae, "\n")] = 0; 
+
+    printf("Nome do Pai: ");
+    fgets(p.nomePai, 100, stdin);
+    p.nomePai[strcspn(p.nomePai, "\n")] = 0;
+
+    pacientes[totalPacientes++] = p;
+    printf("Paciente cadastrado com sucesso!\n");
+}
+
+// Função para registrar uma nova consulta
+void registrarConsulta() {
+    int codigo, encontrado = -1;
+    printf("Informe o código do paciente: ");
+    scanf("%d", &codigo);
+
+    for (int i = 0; i < totalPacientes; i++) {
+        if (pacientes[i].codigo == codigo) {
+            encontrado = i;
+            break;
+        }
+    }
+
+    if (encontrado == -1) {
+        printf("Paciente não encontrado!\n");
+        return;
+    }
+
+    printf("Data da Última Consulta (dd/mm/aaaa): ");
+    scanf("%s", pacientes[encontrado].ultimaConsulta.dataConsulta);
+
+    printf("Peso (Kg): ");
+    scanf("%f", &pacientes[encontrado].ultimaConsulta.peso);
+
+    printf("Altura (cm): ");
+    scanf("%f", &pacientes[encontrado].ultimaConsulta.altura);
+
+    getchar(); // Limpar o buffer do teclado
+    printf("Prescrição: ");
+    fgets(pacientes[encontrado].ultimaConsulta.prescricao, 256, stdin);
+
+    printf("Valor Pago (R$): ");
+    scanf("%f", &pacientes[encontrado].ultimaConsulta.valorPago);
+
+    printf("Consulta registrada com sucesso!\n");
+}
+
+// Função para visualizar a prescrição de um paciente
+void visualizarPrescricao() {
+    int codigo, encontrado = -1;
+    printf("Informe o código do paciente: ");
+    scanf("%d", &codigo);
+
+    for (int i = 0; i < totalPacientes; i++) {
+        if (pacientes[i].codigo == codigo) {
+            encontrado = i;
+            break;
+        }
+    }
+
+    if (encontrado == -1) {
+        printf("Paciente não encontrado!\n");
+        return;
+    }
+
+    int anos, meses, dias;
+    calcularIdade(pacientes[encontrado].dataNascimento, &anos, &meses, &dias);
+
+    printf("Código do Paciente: %d\n", pacientes[encontrado].codigo);
+    printf("Nome do Paciente: %s\n", pacientes[encontrado].nome);
+    printf("Data da Última Consulta: %s\n", pacientes[encontrado].ultimaConsulta.dataConsulta);
+    printf("Idade: %d anos, %d meses e %d dias\n", anos, meses, dias);
+    printf("Peso: %.2f kg\n", pacientes[encontrado].ultimaConsulta.peso);
+    printf("Altura: %.2f cm\n", pacientes[encontrado].ultimaConsulta.altura);
+    printf("Prescrição: %s\n", pacientes[encontrado].ultimaConsulta.prescricao);
+}
+
+void listarPacientes() {
+    if (totalPacientes == 0) {
+        printf("Nenhum paciente cadastrado!\n");
+        return;
+    }
+
+    for (int i = 0; i < totalPacientes; i++) {
+        printf("Código: %d\n", pacientes[i].codigo);
+        printf("Nome: %s\n", pacientes[i].nome);
+        printf("Data de Nascimento: %s\n", pacientes[i].dataNascimento);
+        printf("Nome da Mãe: %s\n", pacientes[i].nomeMae);
+        printf("Nome do Pai: %s\n", pacientes[i].nomePai);
+        printf("Data da Última Consulta: %s\n", pacientes[i].ultimaConsulta.dataConsulta);
+        printf("----------------------------------------\n");
+    }
+}
+
+// Função para calcular o valor total recebido em um determinado mês
+void valorTotalRecebido() {
+    int mes, ano;
+    float totalRecebido = 0;
+
+    printf("Informe o mês (mm): ");
+    scanf("%d", &mes);
+
+    printf("Informe o ano (aaaa): ");
+    scanf("%d", &ano);
+
+    for (int i = 0; i < totalPacientes; i++) {
+        int consultaDia, consultaMes, consultaAno;
+        sscanf(pacientes[i].ultimaConsulta.dataConsulta, "%d/%d/%d", &consultaDia, &consultaMes, &consultaAno);
+
+        if (consultaMes == mes && consultaAno == ano) {
+            totalRecebido += pacientes[i].ultimaConsulta.valorPago;
+        }
+    }
+
+    printf("Valor total recebido em %02d/%04d: R$ %.2f\n", mes, ano, totalRecebido);
+}
+
+int main() {
+    char opcao;
+
+    do {
+        printf("\nMenu de Opções:\n");
+        printf("A) Cadastrar Paciente\n");
+        printf("B) Registrar Consulta\n");
+        printf("C) Visualizar Prescrição\n");
+        printf("D) Listar Pacientes\n");
+        printf("E) Valor total recebido no mês\n");
+        printf("F) Finalizar\n");
+        printf("Escolha uma opção: ");
+        scanf(" %c", &opcao);
+
+        if (opcao == 'A') {
+            cadastrarPaciente();
+        } else if (opcao == 'B') {
+            registrarConsulta();
+        } else if (opcao == 'C') {
+            visualizarPrescricao();
+        } else if (opcao == 'D') {
+            listarPacientes();
+        } else if (opcao == 'E') {
+            valorTotalRecebido();
+        } else if (opcao == 'F') {
+            printf("Finalizando o programa...\n");
+        } else {
+            printf("Opção inválida!\n");
+        }
+    } while (opcao != 'F');
+
+    return 0;
+}
+
