@@ -22,8 +22,9 @@ typedef struct {
     Consulta ultimaConsulta;
 } Paciente;
 
-Paciente pacientes[100];
-int totalPacientes = 0;
+Paciente listaPacientes[100];
+int contagemPacientes = 0;
+
 // Função para calcular a idade
 void calcularIdade(const char *dataNascimento, int *anos, int *meses, int *dias) {
     int dia, mes, ano;
@@ -49,136 +50,136 @@ void calcularIdade(const char *dataNascimento, int *anos, int *meses, int *dias)
 
 // Função para cadastrar um novo paciente
 void cadastrarPaciente() {
-    Paciente p;
+    Paciente novoPaciente;
     printf("Código do Paciente: ");
-    scanf("%d", &p.codigo);
-    getchar(); 
+    scanf("%d", &novoPaciente.codigo);
+    getchar();
 
     printf("Nome do Paciente: ");
-    fgets(p.nome, 100, stdin);
-    p.nome[strcspn(p.nome, "\n")] = 0; 
+    fgets(novoPaciente.nome, 100, stdin);
+    novoPaciente.nome[strcspn(novoPaciente.nome, "\n")] = 0;
 
     printf("Data de Nascimento (dd/mm/aaaa): ");
-    scanf("%s", p.dataNascimento);
+    scanf("%s", novoPaciente.dataNascimento);
 
     getchar(); // Limpar o buffer do teclado
     printf("Nome da Mãe: ");
-    fgets(p.nomeMae, 100, stdin);
-    p.nomeMae[strcspn(p.nomeMae, "\n")] = 0; 
+    fgets(novoPaciente.nomeMae, 100, stdin);
+    novoPaciente.nomeMae[strcspn(novoPaciente.nomeMae, "\n")] = 0;
 
     printf("Nome do Pai: ");
-    fgets(p.nomePai, 100, stdin);
-    p.nomePai[strcspn(p.nomePai, "\n")] = 0;
+    fgets(novoPaciente.nomePai, 100, stdin);
+    novoPaciente.nomePai[strcspn(novoPaciente.nomePai, "\n")] = 0;
 
-    pacientes[totalPacientes++] = p;
+    listaPacientes[contagemPacientes++] = novoPaciente;
     printf("Paciente cadastrado com sucesso!\n");
 }
 
 // Função para registrar uma nova consulta
 void registrarConsulta() {
-    int codigo, encontrado = -1;
+    int codigoPaciente, indicePaciente = -1;
     printf("Informe o código do paciente: ");
-    scanf("%d", &codigo);
+    scanf("%d", &codigoPaciente);
 
-    for (int i = 0; i < totalPacientes; i++) {
-        if (pacientes[i].codigo == codigo) {
-            encontrado = i;
+    for (int i = 0; i < contagemPacientes; i++) {
+        if (listaPacientes[i].codigo == codigoPaciente) {
+            indicePaciente = i;
             break;
         }
     }
 
-    if (encontrado == -1) {
+    if (indicePaciente == -1) {
         printf("Paciente não encontrado!\n");
         return;
     }
 
     printf("Data da Última Consulta (dd/mm/aaaa): ");
-    scanf("%s", pacientes[encontrado].ultimaConsulta.dataConsulta);
+    scanf("%s", listaPacientes[indicePaciente].ultimaConsulta.dataConsulta);
 
     printf("Peso (Kg): ");
-    scanf("%f", &pacientes[encontrado].ultimaConsulta.peso);
+    scanf("%f", &listaPacientes[indicePaciente].ultimaConsulta.peso);
 
     printf("Altura (cm): ");
-    scanf("%f", &pacientes[encontrado].ultimaConsulta.altura);
+    scanf("%f", &listaPacientes[indicePaciente].ultimaConsulta.altura);
 
     getchar(); // Limpar o buffer do teclado
     printf("Prescrição: ");
-    fgets(pacientes[encontrado].ultimaConsulta.prescricao, 256, stdin);
+    fgets(listaPacientes[indicePaciente].ultimaConsulta.prescricao, 256, stdin);
 
     printf("Valor Pago (R$): ");
-    scanf("%f", &pacientes[encontrado].ultimaConsulta.valorPago);
+    scanf("%f", &listaPacientes[indicePaciente].ultimaConsulta.valorPago);
 
     printf("Consulta registrada com sucesso!\n");
 }
 
 // Função para visualizar a prescrição de um paciente
 void visualizarPrescricao() {
-    int codigo, encontrado = -1;
+    int codigoPaciente, indicePaciente = -1;
     printf("Informe o código do paciente: ");
-    scanf("%d", &codigo);
+    scanf("%d", &codigoPaciente);
 
-    for (int i = 0; i < totalPacientes; i++) {
-        if (pacientes[i].codigo == codigo) {
-            encontrado = i;
+    for (int i = 0; i < contagemPacientes; i++) {
+        if (listaPacientes[i].codigo == codigoPaciente) {
+            indicePaciente = i;
             break;
         }
     }
 
-    if (encontrado == -1) {
+    if (indicePaciente == -1) {
         printf("Paciente não encontrado!\n");
         return;
     }
 
     int anos, meses, dias;
-    calcularIdade(pacientes[encontrado].dataNascimento, &anos, &meses, &dias);
+    calcularIdade(listaPacientes[indicePaciente].dataNascimento, &anos, &meses, &dias);
 
-    printf("Código do Paciente: %d\n", pacientes[encontrado].codigo);
-    printf("Nome do Paciente: %s\n", pacientes[encontrado].nome);
-    printf("Data da Última Consulta: %s\n", pacientes[encontrado].ultimaConsulta.dataConsulta);
+    printf("Código do Paciente: %d\n", listaPacientes[indicePaciente].codigo);
+    printf("Nome do Paciente: %s\n", listaPacientes[indicePaciente].nome);
+    printf("Data da Última Consulta: %s\n", listaPacientes[indicePaciente].ultimaConsulta.dataConsulta);
     printf("Idade: %d anos, %d meses e %d dias\n", anos, meses, dias);
-    printf("Peso: %.2f kg\n", pacientes[encontrado].ultimaConsulta.peso);
-    printf("Altura: %.2f cm\n", pacientes[encontrado].ultimaConsulta.altura);
-    printf("Prescrição: %s\n", pacientes[encontrado].ultimaConsulta.prescricao);
+    printf("Peso: %.2f kg\n", listaPacientes[indicePaciente].ultimaConsulta.peso);
+    printf("Altura: %.2f cm\n", listaPacientes[indicePaciente].ultimaConsulta.altura);
+    printf("Prescrição: %s\n", listaPacientes[indicePaciente].ultimaConsulta.prescricao);
 }
 
 void listarPacientes() {
-    if (totalPacientes == 0) {
+    if (contagemPacientes == 0) {
         printf("Nenhum paciente cadastrado!\n");
         return;
     }
 
-    for (int i = 0; i < totalPacientes; i++) {
-        printf("Código: %d\n", pacientes[i].codigo);
-        printf("Nome: %s\n", pacientes[i].nome);
-        printf("Data de Nascimento: %s\n", pacientes[i].dataNascimento);
-        printf("Nome da Mãe: %s\n", pacientes[i].nomeMae);
-        printf("Nome do Pai: %s\n", pacientes[i].nomePai);
-        printf("Data da Última Consulta: %s\n", pacientes[i].ultimaConsulta.dataConsulta);
+    for (int i = 0; i < contagemPacientes; i++) {
+        printf("Código: %d\n", listaPacientes[i].codigo);
+        printf("Nome: %s\n", listaPacientes[i].nome);
+        printf("Data de Nascimento: %s\n", listaPacientes[i].dataNascimento);
+        printf("Nome da Mãe: %s\n", listaPacientes[i].nomeMae);
+        printf("Nome do Pai: %s\n", listaPacientes[i].nomePai);
+        printf("Data da Última Consulta: %s\n", listaPacientes[i].ultimaConsulta.dataConsulta);
         printf("----------------------------------------\n");
     }
 }
 
 // Função para calcular o valor total recebido em um determinado mês
 void valorTotalRecebido() {
-    int mes, ano;
-    float totalRecebido = 0;
+    int mesConsulta, anoConsulta;
+    float totalConsultasPagas = 0;
 
     printf("Informe o mês (mm): ");
-    scanf("%d", &mes);
+    scanf("%d", &mesConsulta);
 
     printf("Informe o ano (aaaa): ");
-    scanf("%d", &ano);
+    scanf("%d", &anoConsulta);
 
-    for (int i = 0; i < totalPacientes; i++) {
+    for (int i = 0; i < contagemPacientes; i++) {
         int consultaDia, consultaMes, consultaAno;
-        sscanf(pacientes[i].ultimaConsulta.dataConsulta, "%d/%d/%d", &consultaDia, &consultaMes, &consultaAno);
+        sscanf(listaPacientes[i].ultimaConsulta.dataConsulta, "%d/%d/%d", &consultaDia, &consultaMes, &consultaAno);
 
-        if (consultaMes == mes && consultaAno == ano) {
-            totalRecebido += pacientes[i].ultimaConsulta.valorPago;
+        if (consultaMes == mesConsulta && consultaAno == anoConsulta) {
+            totalConsultasPagas += listaPacientes[i].ultimaConsulta.valorPago;
         }
     }
 
-    printf("Valor total recebido em %02d/%04d: R$ %.2f\n", mes, ano, totalRecebido);
+    printf("Valor total recebido em %02d/%04d: R$ %.2f\n", mesConsulta, anoConsulta, totalConsultasPagas);
 }
 
 int main() {
@@ -214,4 +215,3 @@ int main() {
 
     return 0;
 }
-
