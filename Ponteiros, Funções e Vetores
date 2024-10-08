@@ -1,0 +1,42 @@
+#include <stdio.h>
+
+void lerVetor(int *p);
+void mostraVetor(int *p);
+
+int main() {
+    int a[5], b[5], c[5];
+
+    printf("Valor A:\n");
+    lerVetor(a);
+    printf("Vetor B:\n");
+    lerVetor(b);
+  
+    printf("Vetor A digitado: ");
+    mostraVetor(a);
+    printf("Vetor B digitado: ");
+    mostraVetor(b);
+    printf("Vetor C digitado: ");
+    mostraVetor(c);
+    printf("------------");
+    return 0;
+}
+void lerVetor(int *p) {
+    int i;
+    for (i = 0; i < 5; i++) {
+        scanf("%d", p + i);
+    }
+}
+void mostraVetor(int *p) {
+    int i;
+    for (i = 0; i < 5; i++) {
+        printf("%d ", *(p + i));
+    }
+void somaVetores(int *pa, int *pb, int *pc){
+    int i;
+    for (i = 0; i<5; i++){
+        //c[i] = a[i] + b[i];
+        *(pc + i) = *(pa +i)+ *(pb + i);
+    }
+    return;
+    }
+}
