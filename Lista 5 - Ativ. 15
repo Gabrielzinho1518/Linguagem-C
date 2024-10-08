@@ -1,0 +1,26 @@
+//Escrever um programa que leia uma palavra qualquer e verifique se esta palavra é um palíndromo.
+
+#include <stdio.h>
+#include <string.h>
+int main (){
+    char s[20], *ps, *pq, palindromo;
+    int flag = 1;
+    pq = ps = s;
+    printf("Digite uma palavra qualquer:\n");
+    scanf("%s", &ps);
+
+    for( ; *pq; pq++){
+    pq--;
+    }
+
+    for( ; ps<pq;ps++,pq--){
+
+    if (*ps!= *pq) flag = 0;
+    }
+    if (flag == 1)
+        printf("É palindromo");
+        else
+        printf("Não é palindromo");
+
+return 0;
+}
