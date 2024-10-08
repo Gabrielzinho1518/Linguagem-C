@@ -1,0 +1,20 @@
+#include <stdio.h>
+
+int main() {
+    float num1, num2, media;
+
+    // Entrada dos números
+    printf("Digite o primeiro número: ");
+    scanf("%f", &num1);
+    
+    printf("Digite o segundo número: ");
+    scanf("%f", &num2);
+
+    // Cálculo da média
+    media = (num1 + num2) / 2;
+
+    // Exibe o resultado
+    printf("A média aritmética é: %.2f\n", media);
+
+    return 0;
+}
