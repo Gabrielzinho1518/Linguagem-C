@@ -13,3 +13,19 @@ Resposta: Sim, isso é verdadeiro. Se px é um ponteiro que aponta para x, entã
 px = NULL; px = &x; pode ser verdadeiro e px agora aponta para x?
 
 Resposta: Sim, isso é verdadeiro. Você pode inicialmente definir px como NULL e depois atribuir o endereço de x a ele.
+
+*px = x pode ser verdadeiro se px for um ponteiro para uma variável x?
+
+Resposta: Sim, isso é verdadeiro. *px atribui o valor de x à posição de memória apontada por px.
+int *p; *p = 5; pode ser verdadeiro sem inicializar p primeiro?
+
+Resposta: Não, isso é falso. p precisa ser inicializado com um endereço válido antes de desreferenciá-lo.
+&x = p; pode ser verdadeiro se p for um ponteiro para x?
+
+Resposta: Não, isso é falso. O operador & obtém o endereço de x, mas não pode ser atribuído a p dessa forma.
+p = NULL; pode ser verdadeiro e indica que p não aponta para nenhum lugar?
+
+Resposta: Sim, isso é verdadeiro. Atribuir NULL a um ponteiro significa que ele não está apontando para uma posição válida na memória.
+int arr[5]; int *p = arr; pode ser verdadeiro, e p agora aponta para o primeiro elemento do array?
+
+Resposta: Sim, isso é verdadeiro. Em C, o nome de um array pode ser tratado como um ponteiro para seu primeiro elemento.
