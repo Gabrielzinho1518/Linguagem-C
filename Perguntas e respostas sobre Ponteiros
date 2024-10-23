@@ -1,0 +1,15 @@
+px = &x; pode ser verdadeiro se px for um ponteiro para o tipo da variável x?
+
+Resposta: Sim, isso é verdadeiro. &x obtém o endereço da variável x, e px pode armazenar esse endereço.
+&px = x; pode ser verdadeiro se px for um ponteiro?
+
+Resposta: Não, isso é falso. &px é o endereço do ponteiro px, e não pode ser atribuído a uma variável diretamente.
+int *px; *px = &x; pode ser verdadeiro se px não for inicializado?
+
+Resposta: Não, isso é falso. Você não pode desreferenciar um ponteiro não inicializado para armazenar o endereço de x.
+x = *px; pode ser verdadeiro se px apontar para x?
+
+Resposta: Sim, isso é verdadeiro. Se px é um ponteiro que aponta para x, então *px acessa o valor de x.
+px = NULL; px = &x; pode ser verdadeiro e px agora aponta para x?
+
+Resposta: Sim, isso é verdadeiro. Você pode inicialmente definir px como NULL e depois atribuir o endereço de x a ele.
