@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int *alocarVetor(int t) {
+    int *p;
+    p = (int *) malloc(t * sizeof(int));
+    if (!p) {
+        printf("Erro na alocação de memória\n");
+        exit(-1);
+    }
+    return p;
+}
+
+void lerVetor(int *p, int t, char *s) {
+    int i;
+    printf("Digite os elementos do vetor %s:\n", s);
+    for (i = 0; i < t; i++) {
+        scanf("%d", &p[i]);
+    }
+}
+
+int *maior(int *p, int t) {
+    int *pn = p; // Inicializa pn com o primeiro elemento do vetor
+    for (int i = 1; i < t; i++) {  // Começa a partir do segundo elemento
+        if (p[i] > *pn) {
+            pn = &p[i]; // Atualiza pn para apontar para o maior elemento
+        }
+    }
+    return pn;
+}
+
+int main() {
+    int tam;
+    int *v, *pMaior;
+
+    printf("Tamanho do vetor: ");
+    scanf("%d", &tam);
+
+    v = alocarVetor(tam);  // Aloca o vetor
+    lerVetor(v, tam, "A"); // Lê os elementos do vetor
+
+    pMaior = maior(v, tam); // Encontra o maior valor no vetor
+
+    printf("O maior valor é: %d\n", *pMaior); // Imprime o maior valor
+    free(v);  // Libera a memória alocada
+
+    return 0;
+}
