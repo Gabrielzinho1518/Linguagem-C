@@ -1,0 +1,117 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define MAX 100
+
+void informarMatriz(int n, int matriz[MAX][MAX]) {
+    printf("Digite os elementos da matriz %dx%d:\n", n, n);
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            scanf("%d", &matriz[i][j]);
+}
+
+void gerarMatriz(int n, int matriz[MAX][MAX]) {
+    srand(time(NULL));
+    printf("Gerando matriz aleatória %dx%d:\n", n, n);
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            matriz[i][j] = rand() % 10;
+            printf("%d ", matriz[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void classeMatriz(int n, int matriz[MAX][MAX]) {
+    int simetrica = 1, diagonal = 1, triSuperior = 1, triInferior = 1;
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (matriz[i][j] != matriz[j][i]) simetrica = 0;
+            if (i != j && matriz[i][j] != 0) diagonal = 0;
+            if (i > j && matriz[i][j] != 0) triSuperior = 0;
+            if (i < j && matriz[i][j] != 0) triInferior = 0;
+        }
+    }
+
+    printf("Classe da matriz:\n");
+    if (simetrica) printf("Matriz simétrica\n");
+    if (diagonal) printf("Matriz diagonal\n");
+    if (triSuperior) printf("Matriz triangular superior\n");
+    if (triInferior) printf("Matriz triangular inferior\n");
+    if (!simetrica && !diagonal && !triSuperior && !triInferior)
+        printf("Nenhuma classe específica\n");
+}
+
+void calculosMatriz(int n, int matriz[MAX][MAX]) {
+    int somaColuna = 0, produtoLinha = 1, somaDiagonal = 0;
+    int maior = matriz[0][0], maiorPos[MAX][2], maiorCount = 0;
+
+    for (int i = 0; i < n; i++) {
+        somaColuna += matriz[i][0];  // Soma da 1ª coluna
+        somaDiagonal += matriz[i][i];  // Soma da diagonal principal
+        produtoLinha *= matriz[0][i];  // Produto da 1ª linha
+        for (int j = 0; j < n; j++) {
+            if (matriz[i][j] > maior) {
+                maior = matriz[i][j];
+                maiorCount = 0;
+                maiorPos[maiorCount][0] = i;
+                maiorPos[maiorCount++][1] = j;
+            } else if (matriz[i][j] == maior) {
+                maiorPos[maiorCount][0] = i;
+                maiorPos[maiorCount++][1] = j;
+            }
+        }
+    }
+
+    printf("Cálculos sobre a matriz:\n");
+    printf("Somatório da 1ª coluna: %d\n", somaColuna);
+    printf("Produto da 1ª linha: %d\n", produtoLinha);
+    printf("Soma da diagonal principal: %d\n", somaDiagonal);
+    printf("Maior valor: %d\n", maior);
+    printf("Posições do maior valor:\n");
+    for (int i = 0; i < maiorCount; i++)
+        printf("(%d, %d)\n", maiorPos[i][0], maiorPos[i][1]);
+}
+
+int main() {
+    int n, matriz[MAX][MAX];
+    char opcao;
+
+    printf("Digite o tamanho da matriz (N x N): ");
+    scanf("%d", &n);
+
+    printf("1 - Informar elementos\n2 - Gerar elementos\nEscolha uma opção: ");
+    int escolha;
+    scanf("%d", &escolha);
+    if (escolha == 1)
+        informarMatriz(n, matriz);
+    else if (escolha == 2)
+        gerarMatriz(n, matriz);
+    else {
+        printf("Opção inválida.\n");
+        return 1;
+    }
+
+    do {
+        printf("\nMenu:\nA - Classe da matriz\nB - Cálculos sobre a matriz\nC - Sair\nEscolha uma opção: ");
+        scanf(" %c", &opcao);
+
+        switch (opcao) {
+            case 'A':
+                classeMatriz(n, matriz);
+                break;
+            case 'B':
+                calculosMatriz(n, matriz);
+                break;
+            case 'C':
+                printf("Encerrando o programa.\n");
+                break;
+            default:
+                printf("Opção inválida.\n");
+        }
+    } while (opcao != 'C');
+
+    return 0;
+}
