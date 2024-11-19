@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+int main() {
+    int bits[8];
+    int sucesso = 1; // Variável que indica se todos os bits foram lidos com sucesso
+
+    // Lê os 8 bits
+    for (int i = 0; i < 8; i++) {
+        scanf("%d", &bits[i]);
+        if (bits[i] == 9) {
+            sucesso = 0; // Se algum bit for 9, há falha
+        }
+    }
+
+    // Verifica o resultado e imprime a saída
+    if (sucesso) {
+        printf("S\n");
+    } else {
+        printf("F\n");
+    }
+
+    return 0;
+}
